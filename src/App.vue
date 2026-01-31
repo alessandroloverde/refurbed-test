@@ -1,5 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { fetchExchangeRates } from './services/currency.service';
+import { fetchVatRates } from './services/vat.service';
 
 const countries = [
   {
@@ -30,43 +32,6 @@ const products = ref([
   },
 ]);
 
-/* ––– ⚠️ Api key must be in .env file: VAT_API_KEY –––––– */
-const vatConnectionTest = async () => {
-  try {
-    const response = await fetch('https://api.vatstack.com/v1/rates', {
-      method: 'GET',
-      headers: {
-        'X-API-KEY': 'pk_live_2799371ddcc7b44086e2da1e9d22a4f3',
-      },
-    });
-
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    console.log('VatStack connection OK:', data);
-  } catch (error) {
-    console.error('VatStack connection failed:', error);
-  }
-};
-
-/* ––– ⚠️ Api key must be in .env file: CURRENCY_API_KEY –––––– */
-const currencyConnectionTest = async () => {
-  try {
-    const response = await fetch(
-      'https://api.currencyapi.com/v3/currencies?apikey=cur_live_0E5lRNI66c83ORLNBhXxrznnzyVRYIWKirEnVNMY&currencies=EUR%2CUSD%2CPLN%2CCZK&base_currency=EUR',
-      {
-        method: 'GET',
-        headers: {
-          apikey: 'cur_live_0E5lRNI66c83ORLNBhXxrznnzyVRYIWKirEnVNMY',
-        },
-      }
-    );
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    console.log('😀 CurrencyAPI connection OK:', data);
-  } catch (error) {
-    console.error('🤬 CurrencyAPI connection failed:', error);
-  }
-};
 
 const addToCart = id => {
   const product = { ...products.value[id] };
@@ -104,8 +69,8 @@ const exchangeRates = async () => {
 };
 
 onMounted(() => {
-  vatConnectionTest();
-  currencyConnectionTest();
+  fetchVatRates();
+  fetchExchangeRates();
   vat_rates();
   exchangeRates();
 });
