@@ -20,6 +20,23 @@ const products = ref([
   },
 ]);
 
+const vatConnectionTest = async () => {
+  try {
+    const response = await fetch("https://api.vatstack.com/v1/rates", {
+      method: "GET",
+      headers: {
+        "X-API-KEY": "pk_live_2799371ddcc7b44086e2da1e9d22a4f3",
+      },
+    });
+
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    console.log("VatStack connection OK:", data);
+  } catch (error) {
+    console.error("VatStack connection failed:", error);
+  }
+};
+
 const addToCart = id => {
   const product = { ...products.value[id] };
   product.quantity = 1;
@@ -40,9 +57,9 @@ const vat_rates = async () => {
     const url = 'https://api.vatstack.com/v1/rates';
     const response = await fetch(url, options);
     const data = await response.json();
-    console.log(data);
+    //console.log('Alessandro asks: ', data);
   } catch (error) {
-    console.error('Error fetching VAT rates:', error);
+    //console.error('Error fetching VAT rates:', error);
   }
 };
 
@@ -52,10 +69,11 @@ const exchangeRates = async () => {
   };
   const url = `https://api.currencyapi.com/v3/latest?apikey=API-KEY&currencies=EUR%2CUSD%2CPLN`;
   const response = await fetch(url, options);
-  console.log(response);
+  //console.log(response);
 };
 
 onMounted(() => {
+  vatConnectionTest();
   vat_rates();
   exchangeRates();
 });
