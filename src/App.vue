@@ -1,14 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { fetchExchangeRates } from './services/currency.service';
-import { fetchVatRates } from './services/vat.service';
 import { useMarketStore } from './stores/market.store';
 
-
-const marketStore = useMarketStore();
 const market = useMarketStore();
-
-
 
 const countries = [
   {
@@ -51,35 +45,9 @@ const total = products => {
   return 0;
 };
 
-const vat_rates = async () => {
-  try {
-    const options = {
-      method: 'GET',
-      headers: { 'X-API-KEY': 'API-KEY' },
-    };
-    const url = 'https://api.vatstack.com/v1/rates';
-    const response = await fetch(url, options);
-    const data = await response.json();
-    //console.log('Alessandro asks: ', data);
-  } catch (error) {
-    //console.error('Error fetching VAT rates:', error);
-  }
-};
-
-const exchangeRates = async () => {
-  const options = {
-    method: 'GET',
-  };
-  const url = `https://api.currencyapi.com/v3/latest?apikey=API-KEY&currencies=EUR%2CUSD%2CPLN`;
-  const response = await fetch(url, options);
-  //console.log(response);
-};
 
 onMounted(() => {
-  fetchVatRates();
-  fetchExchangeRates();
-  vat_rates();
-  exchangeRates();
+  market.loadMarketData();
 });
 </script>
 
@@ -120,13 +88,21 @@ onMounted(() => {
       <div class="p-4 m-4 bg-white shadow-md">
       TOPO
           <p>Country: {{ market.selectedCountry }}</p>
-          <p>Counter: {{ market.counter }}</p>
-          <button 
-            class="px-3 py-1.5 rounded bg-blue-600 text-white text-sm hover:bg-blue-700 transition"
-            @click="market.increment()">+</button>
           <button
             class="px-3 py-1.5 rounded bg-gray-200 text-gray-800 text-sm hover:bg-gray-300 transition"
             @click="market.setCountry('PL')">Set PL</button>
+
+        <ul class="text-xs font-mono bg-gray-50 border rounded p-3 space-y-1 max-w-sm">
+          <li
+            v-for="(rate, currency) in market.exchangeRates"
+            :key="currency"
+            class="flex justify-between"
+          >
+            <span>{{ currency }}</span>
+            <span>{{ rate }}</span>
+          </li>
+        </ul>
+
       </div>
 
       <div class="p-4 m-4 bg-white shadow-md">
