@@ -8,7 +8,8 @@ export const useMarketStore = defineStore('market', {
       exchangeRates: {} as Record<string, number>,
       vatRates: {} as Record<string, number>,
       loading: false,
-      error: null as string | null
+      error: null as string | null,
+      counter: 0
    }),
 
    actions: {
@@ -31,6 +32,9 @@ export const useMarketStore = defineStore('market', {
       },
       setCountry(countryCode: string) {
          this.selectedCountry = countryCode;
-      }
+      },
+      increment () {
+         this.counter++;
+      },
    }
 })

@@ -2,6 +2,13 @@
 import { ref, onMounted } from 'vue';
 import { fetchExchangeRates } from './services/currency.service';
 import { fetchVatRates } from './services/vat.service';
+import { useMarketStore } from './stores/market.store';
+
+
+const marketStore = useMarketStore();
+const market = useMarketStore();
+
+
 
 const countries = [
   {
@@ -109,6 +116,19 @@ onMounted(() => {
           </div>
         </div>
       </div>
+
+      <div class="p-4 m-4 bg-white shadow-md">
+      TOPO
+          <p>Country: {{ market.selectedCountry }}</p>
+          <p>Counter: {{ market.counter }}</p>
+          <button 
+            class="px-3 py-1.5 rounded bg-blue-600 text-white text-sm hover:bg-blue-700 transition"
+            @click="market.increment()">+</button>
+          <button
+            class="px-3 py-1.5 rounded bg-gray-200 text-gray-800 text-sm hover:bg-gray-300 transition"
+            @click="market.setCountry('PL')">Set PL</button>
+      </div>
+
       <div class="p-4 m-4 bg-white shadow-md">
         <h2 class="text-2xl mb-2">Cart</h2>
         <hr />
