@@ -1,25 +1,36 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
+const countries = [
+  {
+    name: "Czech Republik",
+    en_name: "Czech Republic",
+    currency: "CZK",
+    currency_name: "Czech Republic Koruna",
+    currency_value: 0.456,
+    vat: 21,
+    flag: null
+  }
+]
 const cart = ref([]);
 const products = ref([
   {
     id: 1,
     name: 'iPhone 11',
     picture: 'https://files.refurbed.com/ii/iphone-11-pro-1619179577.jpg',
-    price: 399,
+    netPrice: 399,
     stock: 3,
   },
   {
     id: 2,
     name: 'Samsung Galaxy S8',
-    picture:
-      'https://files.refurbed.com/ii/64-gb-schwarz-single-sim-1562659918.jpg',
-    price: 275,
+    picture: 'https://files.refurbed.com/ii/64-gb-schwarz-single-sim-1562659918.jpg',
+    netPrice: 275,
     stock: 5,
   },
 ]);
 
+/* ––– ⚠️ Api key must be in .env file: VAT_API_KEY –––––– */
 const vatConnectionTest = async () => {
   try {
     const response = await fetch('https://api.vatstack.com/v1/rates', {
@@ -37,10 +48,11 @@ const vatConnectionTest = async () => {
   }
 };
 
+/* ––– ⚠️ Api key must be in .env file: CURRENCY_API_KEY –––––– */
 const currencyConnectionTest = async () => {
   try {
     const response = await fetch(
-      'https://api.currencyapi.com/v3/latest?currencies=EUR%2CUSD%2CPLN',
+      'https://api.currencyapi.com/v3/currencies?apikey=cur_live_0E5lRNI66c83ORLNBhXxrznnzyVRYIWKirEnVNMY&currencies=EUR%2CUSD%2CPLN%2CCZK&base_currency=EUR',
       {
         method: 'GET',
         headers: {
@@ -122,7 +134,7 @@ onMounted(() => {
         >
           <img class="w-32" :src="product.picture" />
           <h3 class="text-xl mb-2">{{ product.name }}</h3>
-          <p class="mb-2">{{ product.price }}</p>
+          <p class="mb-2">{{ product.netPrice }}</p>
           <div
             class="py-2 px-4 bg-[#332e80] hover:bg-[#27237a] text-white rounded-lg shadow-md float-right"
             @click="addToCart(index)"
@@ -147,7 +159,7 @@ onMounted(() => {
             <tr v-for="product in cart" :key="product.id">
               <td class="p-2">{{ product.name }}</td>
               <td class="p-2">{{ product.quantity }}</td>
-              <td class="p-2">{{ product.price }}</td>
+              <td class="p-2">{{ product.netPrice }}</td>
             </tr>
           </tbody>
         </table>
