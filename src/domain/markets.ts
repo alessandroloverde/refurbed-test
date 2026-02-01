@@ -2,6 +2,7 @@ export const AVAILABLE_MARKETS = {
   DE: { code: 'DE', label: 'Germany', currency: 'EUR', vatCountryCode: 'DE', flag: '🇩🇪' },
   AT: { code: 'AT', label: 'Austria', currency: 'EUR', vatCountryCode: 'AT', flag: '🇦🇹' },
   BE: { code: 'BE', label: 'Belgium', currency: 'EUR', vatCountryCode: 'BE', flag: '🇧🇪' },
+  IT: { code: 'IT', label: 'Italy', currency: 'EUR', vatCountryCode: 'IT', flag: '🇮🇹' },
   CZ: { code: 'CZ', label: 'Czech Republic', currency: 'CZK', vatCountryCode: 'CZ', flag: '🇨🇿' },
   DK: { code: 'DK', label: 'Denmark', currency: 'DKK', vatCountryCode: 'DK', flag: '🇩🇰' },
   ES: { code: 'ES', label: 'Spain', currency: 'EUR', vatCountryCode: 'ES', flag: '🇪🇸' },

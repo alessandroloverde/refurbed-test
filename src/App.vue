@@ -54,7 +54,9 @@ onMounted(() => {
 <template>
   <div class="min-h-screen">
     <header class="bg-[#332e80] p-4 w-full">
-      <div class="mx-auto w-full max-w-6xl px-4 py-4">
+      <div class="mx-auto w-full max-w-6xl px-4 py-4 flex justify-between items-center">
+        <img class="w-32" src="./assets/logo.svg" />
+
         <select 
           class="bg-white text-xs border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           :value="market.selectedCountry"
@@ -65,8 +67,6 @@ onMounted(() => {
             :value="m.code"
           >{{m.flag}} {{ m.label }} | {{ m.currency }}</option>
         </select>
-
-        <img class="w-32" src="./assets/logo.svg" />
       </div>
     </header>
     <main class="mx-auto w-full max-w-6xl px-4 py-6">
