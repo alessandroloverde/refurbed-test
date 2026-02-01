@@ -9,12 +9,35 @@ const cart = ref([]);
 const products = ref(PRODUCT_CATALOG.map((p) => ({ ...p })));
 
 
-const addToCart = id => {
+/* const addToCart = id => {
   const product = { ...products.value[id] };
   product.quantity = 1;
   product.stock = product.stock - 1;
   cart.value.push(product);
+}; */
+
+const addToCart = product => {
+  if (product.stock < 0) return;
+
+  const existingItem = cart.value.find(
+    item => item.id === product.id
+  )
+
+  if (existingItem) {
+    existingItem.quantity += 1
+  } else {
+    cart.value.push({
+      id: product.id,
+      name: product.name,
+      netPrice: product.netPrice,
+      quantity: 1
+    })
+  }
+
+  product.stock -= 1
 };
+
+
 
 const total = products => {
   return 0;
@@ -55,7 +78,7 @@ onMounted(() => {
       <div class="grid grid-cols-3 gap-4 p-4 mb-4">
         <div
           class="bg-white rounded-xl p-4 shadow-md flex flex-col"
-          v-for="(product, index) in products"
+          v-for="(product) in products"
           :key="product.id"
         >
           <h3 class="text-lg font-semibold mb-3">{{ product.name }}</h3>
@@ -84,7 +107,7 @@ onMounted(() => {
           <button
             class="w-full py-2 px-4 bg-[#332e80] hover:bg-[#4540a0] active:bg-[#1e1a5e] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none text-white rounded-lg text-sm font-medium transition-colors"
             :disabled="product.stock <= 0"
-            @click="addToCart(index)"
+            @click="addToCart(product)"
           >
             Add to cart
           </button>
