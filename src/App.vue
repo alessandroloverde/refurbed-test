@@ -9,15 +9,8 @@ const cart = ref([]);
 const products = ref(PRODUCT_CATALOG.map((p) => ({ ...p })));
 
 
-/* const addToCart = id => {
-  const product = { ...products.value[id] };
-  product.quantity = 1;
-  product.stock = product.stock - 1;
-  cart.value.push(product);
-}; */
-
 const addToCart = product => {
-  if (product.stock < 0) return;
+  if (product.stock < 1) return;
 
   const existingItem = cart.value.find(
     item => item.id === product.id
