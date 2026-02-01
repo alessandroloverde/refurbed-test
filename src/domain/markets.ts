@@ -1,0 +1,18 @@
+export const AVAILABLE_MARKETS = {
+  DE: { code: 'DE', label: 'Germany', currency: 'EUR', vatCountryCode: 'DE', flag: '🇩🇪' },
+  AT: { code: 'AT', label: 'Austria', currency: 'EUR', vatCountryCode: 'AT', flag: '🇦🇹' },
+  BE: { code: 'BE', label: 'Belgium', currency: 'EUR', vatCountryCode: 'BE', flag: '🇧🇪' },
+  CZ: { code: 'CZ', label: 'Czech Republic', currency: 'CZK', vatCountryCode: 'CZ', flag: '🇨🇿' },
+  DK: { code: 'DK', label: 'Denmark', currency: 'DKK', vatCountryCode: 'DK', flag: '🇩🇰' },
+  ES: { code: 'ES', label: 'Spain', currency: 'EUR', vatCountryCode: 'ES', flag: '🇪🇸' },
+  FI: { code: 'FI', label: 'Finland', currency: 'EUR', vatCountryCode: 'FI', flag: '🇫🇮' },
+  FR: { code: 'FR', label: 'France', currency: 'EUR', vatCountryCode: 'FR', flag: '🇫🇷' },
+  IE: { code: 'IE', label: 'Ireland', currency: 'EUR', vatCountryCode: 'IE', flag: '🇮🇪' },
+  PL: { code: 'PL', label: 'Poland', currency: 'PLN', vatCountryCode: 'PL', flag: '🇵🇱' },
+  NL: { code: 'NL', label: 'Netherlands', currency: 'EUR', vatCountryCode: 'NL', flag: '🇳🇱' },
+  PT: { code: 'PT', label: 'Portugal', currency: 'EUR', vatCountryCode: 'PT', flag: '🇵🇹' },
+  SI: { code: 'SI', label: 'Slovenia', currency: 'EUR', vatCountryCode: 'SI', flag: '🇸🇮' },
+  SK: { code: 'SK', label: 'Slovakia', currency: 'EUR', vatCountryCode: 'SK', flag: '🇸🇰' },
+  SE: { code: 'SE', label: 'Sweden', currency: 'SEK', vatCountryCode: 'SE', flag: '🇸🇪' },
+  CH: { code: 'CH', label: 'Switzerland', currency: 'CHF', vatCountryCode: 'CH', flag: '🇨🇭' },
+};

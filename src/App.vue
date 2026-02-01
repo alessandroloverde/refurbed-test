@@ -55,11 +55,15 @@ onMounted(() => {
   <div class="min-h-screen">
     <header class="bg-[#332e80] p-4 w-full">
       <div class="mx-auto w-full max-w-6xl px-4 py-4">
-        <select
-          class="bg-white text-xs border border-gray-200 rounded p-2 float-right"
+        <select 
+          class="bg-white text-xs border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          :value="market.selectedCountry"
         >
-          <option selected>DE (EUR)</option>
-          <option>PL (PLN)</option>
+          <option 
+            v-for="m in market.allMarkets"
+            :key="m.code"
+            :value="m.code"
+          >{{m.flag}} {{ m.label }} | {{ m.currency }}</option>
         </select>
 
         <img class="w-32" src="./assets/logo.svg" />
