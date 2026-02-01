@@ -17,27 +17,12 @@ const addToCart = product => {
 };
 
 const grossPrice = product => {
-  console.log('DEBUG price inputs', {
-    net: product.netPrice,
-    vat: market.vatRateForSelectedMarket,
-    rate: market.exchangeRateForSelectedMarket,
-  });
   return calculateGrossPrice(
     product.netPrice,
     market.vatRateForSelectedMarket,
     market.exchangeRateForSelectedMarket
   );
 };
-
-
-console.log(
-  'EXCHANGE DEBUG',
-  market.selectedMarket.currency,
-  market.exchangeRateForSelectedMarket
-);
-
-
-
 
 
 const total = products => {
@@ -136,9 +121,11 @@ onMounted(() => {
           </tbody>
         </table>
         <hr />
-        <p class="m-2">Net: 0</p>
-        <p class="m-2">VAT: 0</p>
-        <p class="m-2 font-bold">Total: {{ cart.netTotal }}</p>
+        <p class="m-2">Net: {{ cart.netTotal }}</p>
+        <p class="m-2">VAT: {{ cart.vatTotal }}</p>
+        <p class="m-2 font-bold">
+          Total: {{ cart.grossTotal }} {{ market.selectedMarket?.currency }}
+        </p>
       </div>
     </main>
   </div>

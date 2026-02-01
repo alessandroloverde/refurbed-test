@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import { useMarketStore } from './market.store';
+
 
 interface CartItem {
    id: number;
@@ -22,6 +24,22 @@ export const useCartStore = defineStore('cart', {
    getters: {
       netTotal(state) {
          return state.items.reduce((sum, item) => sum + item.netPrice * item.quantity, 0);
+      },
+      vatTotal(state) {
+         const market = useMarketStore();
+         const net = state.items.reduce(
+            (sum, item) => sum + item.netPrice * item.quantity,
+            0
+         );
+         return net * (market.vatRateForSelectedMarket ?? 0);
+      },
+      grossTotal(state) {
+         const market = useMarketStore();
+         const net = state.items.reduce(
+            (sum, item) => sum + item.netPrice * item.quantity,
+            0
+         );
+         return net * (1 + (market.vatRateForSelectedMarket ?? 0));
       },
    },
 
