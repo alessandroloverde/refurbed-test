@@ -31,6 +31,27 @@ const products = ref([
     netPrice: 275,
     stock: 5,
   },
+  {
+    id: 3,
+    name: 'iPhone 13 mini',
+    picture: 'https://files.refurbed.com/ii/iphone-13-mini-1631709754.jpg',
+    netPrice: 315,
+    stock: 1,
+  },
+  {
+    id: 4,
+    name: 'Samsung Galaxi S25',
+    picture: 'https://files.refurbed.com/ii/samsung-galaxy-s25-1737617765088880944.jpg',
+    netPrice: 600,
+    stock: 11,
+  },
+  {
+    id: 5,
+    name: 'iPhone 16',
+    picture: 'https://files.refurbed.com/ii/iphone-16-1725945767515847653.jpg',
+    netPrice: 510,
+    stock: 23,
+  },
 ]);
 
 
@@ -52,7 +73,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen mainBkg">
     <header class="bg-[#332e80] p-4 w-full">
       <div class="mx-auto w-full max-w-6xl px-4 py-4 flex justify-between items-center">
         <img class="w-32" src="./assets/logo.svg" />
@@ -87,26 +108,6 @@ onMounted(() => {
             Add to cart
           </div>
         </div>
-      </div>
-
-      <div class="p-4 m-4 bg-white shadow-md">
-      TOPO
-          <p>Country: {{ market.selectedCountry }}</p>
-          <button
-            class="px-3 py-1.5 rounded bg-gray-200 text-gray-800 text-sm hover:bg-gray-300 transition"
-            @click="market.setCountry('PL')">Set PL</button>
-
-        <ul class="text-xs font-mono bg-gray-50 border rounded p-3 space-y-1 max-w-sm">
-          <li
-            v-for="(rate, currency) in market.exchangeRates"
-            :key="currency"
-            class="flex justify-between"
-          >
-            <span>{{ currency }}</span>
-            <span>{{ rate }}</span>
-          </li>
-        </ul>
-
       </div>
 
       <div class="p-4 m-4 bg-white shadow-md">

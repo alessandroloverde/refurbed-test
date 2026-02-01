@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+:root {
+   --mainBkg: rgb(245, 239, 248);
+}
+
+.mainBkg { background-color: var(--mainBkg) }
