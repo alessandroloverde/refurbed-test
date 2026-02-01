@@ -14,5 +14,10 @@ export async function fetchVatRates() {
   const json = await res.json();
   console.log('VAT rates:', json.rates);
 
-  return json.rates;
+  return Object.fromEntries(
+    json.rates.map(rate => [
+      rate.country_code,
+      rate.standard_rate / 100
+    ])
+  )
 }

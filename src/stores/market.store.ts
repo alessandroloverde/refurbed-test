@@ -16,18 +16,18 @@ export const useMarketStore = defineStore('market', {
       allMarkets() {
          return Object.values(AVAILABLE_MARKETS);
       },
-      availableMarkets(state) {
+      selectedMarket(state) {
          return AVAILABLE_MARKETS[state.selectedCountry as keyof typeof AVAILABLE_MARKETS];
       },
       exchangeRateForSelectedMarket(state) {
          const currency = AVAILABLE_MARKETS[state.selectedCountry as keyof typeof AVAILABLE_MARKETS].currency
 
-         return state.exchangeRates[currency]
+         return state.exchangeRates[currency] ?? 1
       },
       vatRateForSelectedMarket(state) {
          const vatCode = AVAILABLE_MARKETS[state.selectedCountry as keyof typeof AVAILABLE_MARKETS].vatCountryCode;
 
-         return state.vatRates[vatCode]
+         return state.vatRates[vatCode] ?? 0
       }
    },
 

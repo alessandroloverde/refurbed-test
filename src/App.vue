@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useMarketStore } from './stores/market.store';
 import { useCartStore } from './stores/cart.store';
 import { PRODUCT_CATALOG } from './domain/products';
+import { calculateGrossPrice } from './utils/price'
+import { fetchExchangeRates } from './services/currency.service';
 
 const market = useMarketStore();
 
@@ -13,6 +15,28 @@ const products = ref(PRODUCT_CATALOG.map((p) => ({ ...p })));
 const addToCart = product => {
   cart.addItem(product)
 };
+
+const grossPrice = product => {
+  console.log('DEBUG price inputs', {
+    net: product.netPrice,
+    vat: market.vatRateForSelectedMarket,
+    rate: market.exchangeRateForSelectedMarket,
+  });
+  return calculateGrossPrice(
+    product.netPrice,
+    market.vatRateForSelectedMarket,
+    market.exchangeRateForSelectedMarket
+  );
+};
+
+
+console.log(
+  'EXCHANGE DEBUG',
+  market.selectedMarket.currency,
+  market.exchangeRateForSelectedMarket
+);
+
+
 
 
 
@@ -41,6 +65,7 @@ onMounted(() => {
         <select 
           class="bg-white text-xs border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           :value="market.selectedCountry"
+          @change="market.setCountry($event.target.value)"
         >
           <option 
             v-for="m in market.allMarkets"
@@ -67,7 +92,7 @@ onMounted(() => {
               :alt="product.name"
             />
             <div class="flex flex-col justify-center">
-              <p class="text-xl font-bold mb-1">{{ product.netPrice }} {{ market.availableMarkets?.currency ?? 'EUR' }}</p>
+              <p class="text-xl font-bold mb-1">{{grossPrice(product) }} {{ market.selectedMarket?.currency }} </p>
               <p
                 class="text-sm"
                 :class="{
