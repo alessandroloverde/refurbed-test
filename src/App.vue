@@ -1,33 +1,17 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useMarketStore } from './stores/market.store';
+import { useCartStore } from './stores/cart.store';
 import { PRODUCT_CATALOG } from './domain/products';
 
 const market = useMarketStore();
 
-const cart = ref([]);
+const cart = useCartStore();
 const products = ref(PRODUCT_CATALOG.map((p) => ({ ...p })));
 
 
 const addToCart = product => {
-  if (product.stock < 1) return;
-
-  const existingItem = cart.value.find(
-    item => item.id === product.id
-  )
-
-  if (existingItem) {
-    existingItem.quantity += 1
-  } else {
-    cart.value.push({
-      id: product.id,
-      name: product.name,
-      netPrice: product.netPrice,
-      quantity: 1
-    })
-  }
-
-  product.stock -= 1
+  cart.addItem(product)
 };
 
 
@@ -119,17 +103,17 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="product in cart" :key="product.id">
-              <td class="p-2">{{ product.name }}</td>
-              <td class="p-2">{{ product.quantity }}</td>
-              <td class="p-2">{{ product.netPrice }}</td>
+            <tr v-for="item in cart.items" :key="item.id">
+              <td class="p-2">{{ item.name }}</td>
+              <td class="p-2">{{ item.quantity }}</td>
+              <td class="p-2">{{ item.netPrice }}</td>
             </tr>
           </tbody>
         </table>
         <hr />
         <p class="m-2">Net: 0</p>
         <p class="m-2">VAT: 0</p>
-        <p class="m-2 font-bold">Total: {{ total(cart) }}</p>
+        <p class="m-2 font-bold">Total: {{ cart.netTotal }}</p>
       </div>
     </main>
   </div>
