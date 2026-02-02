@@ -14,6 +14,19 @@ const addToCart = product => {
   cart.addItem(product)
 };
 
+const removeFromCart = (item) => {
+  const removedItem = cart.removeItem(item.id);
+
+  if (!removedItem) return;
+
+  const product = products.value.find(p => p.id === removedItem.id);
+
+  if (product) {
+    product.stock += removedItem.quantity;
+  }
+}
+
+
 // ––– ℹ️ Gross price utility ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // Returns the market-adjusted gross price for a product (VAT + currency conversion)
 const grossPrice = product => {
@@ -43,8 +56,12 @@ const priceLocale = computed(() =>
     : 'en'
 );
 
+
+// ––– ℹ️ Line total helper ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// Line total in selected market currency: (net × qty) + VAT, converted via exchange rate
 const lineTotal = (item) =>
   (item.netPrice * item.quantity * (1 + market.vatRateForSelectedMarket) * market.exchangeRateForSelectedMarket);
+
 
 onMounted(() => {
   market.loadMarketData();
@@ -114,8 +131,9 @@ onMounted(() => {
       <div class="p-4 m-4 bg-white shadow-md rounded-lg">
         <h2 class="text-2xl mb-4">🛒 Your Cart</h2>
 
-        <div class="grid grid-cols-[1fr_6rem_8rem] gap-3 py-2 border-b border-gray-200 text-sm font-medium text-gray-500">
+        <div class="grid grid-cols-[1fr_auto_6rem_8rem] gap-3 py-2 border-b border-gray-200 text-sm font-medium text-gray-500">
           <span>Product</span>
+          <span></span>
           <span class="text-center">Quantity</span>
           <span class="text-right">Price</span>
         </div>
@@ -123,9 +141,16 @@ onMounted(() => {
         <div
           v-for="item in cart.items"
           :key="item.id"
-          class="grid grid-cols-[1fr_6rem_8rem] gap-3 py-3 border-b border-gray-100 text-sm"
+          class="grid grid-cols-[1fr_auto_6rem_8rem] gap-3 py-3 border-b border-gray-100 text-sm items-center"
         >
           <span class="font-medium">{{ item.name }}</span>
+          <button
+            type="button"
+            class="px-3 py-1 text-sm font-medium text-[#332e80] hover:text-[#4540a0] border border-[#332e80] hover:border-[#4540a0] rounded"
+            @click="removeFromCart(item)"
+          >
+            Remove
+          </button>
           <span class="text-center">{{ item.quantity }}</span>
           <span class="text-right">{{ formatPrice(priceLocale, lineTotal(item), market.selectedMarket?.currency) }}</span>
         </div>

@@ -28,7 +28,7 @@ export const useCartStore = defineStore('cart', {
            (sum, item) => sum + item.netPrice * item.quantity,
            0
          );
-         
+
          return netEur * (market.exchangeRateForSelectedMarket ?? 1);
       },
       vatTotal(state) {
@@ -73,6 +73,15 @@ export const useCartStore = defineStore('cart', {
          }
 
          product.stock -= 1;
+      },
+      removeItem(productId: number) {
+         const index = this.items.findIndex(item => item.id === productId);
+
+         if(index === -1) return;
+
+         const [removedItem] = this.items.splice(index, 1);
+
+         return removedItem;
       }
    }
 });
