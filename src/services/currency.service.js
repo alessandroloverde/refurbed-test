@@ -12,11 +12,10 @@ export async function fetchExchangeRates(base = 'EUR') {
   }
 
   const json = await res.json();
+
   console.log('Exchange rates:', json.data);
+
   return Object.fromEntries(
-    Object.entries(json.data).map(([code, obj]) => [
-      code,
-      obj.value,
-    ])
+    Object.entries(json.data).map(([code, obj]) => [ code, obj.value ])
   );
 }
