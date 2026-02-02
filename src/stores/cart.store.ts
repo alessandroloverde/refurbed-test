@@ -23,7 +23,13 @@ export const useCartStore = defineStore('cart', {
 
    getters: {
       netTotal(state) {
-         return state.items.reduce((sum, item) => sum + item.netPrice * item.quantity, 0);
+         const market = useMarketStore();
+         const netEur = state.items.reduce(
+           (sum, item) => sum + item.netPrice * item.quantity,
+           0
+         );
+         
+         return netEur * (market.exchangeRateForSelectedMarket ?? 1);
       },
       vatTotal(state) {
          const market = useMarketStore();
@@ -31,7 +37,10 @@ export const useCartStore = defineStore('cart', {
             (sum, item) => sum + item.netPrice * item.quantity,
             0
          );
-         return net * (market.vatRateForSelectedMarket ?? 0);
+         const vatAmount = net * (market.vatRateForSelectedMarket ?? 0);
+         const exchangeRate = market.exchangeRateForSelectedMarket ?? 1;
+         
+         return vatAmount * exchangeRate; 
       },
       grossTotal(state) {
          const market = useMarketStore();
@@ -39,7 +48,10 @@ export const useCartStore = defineStore('cart', {
             (sum, item) => sum + item.netPrice * item.quantity,
             0
          );
-         return net * (1 + (market.vatRateForSelectedMarket ?? 0));
+         const grossEur = net * (1 + (market.vatRateForSelectedMarket ?? 0));
+         const exchangeRate = market.exchangeRateForSelectedMarket ?? 1;
+
+         return grossEur * exchangeRate;
       },
    },
 

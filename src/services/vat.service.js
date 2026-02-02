@@ -1,4 +1,4 @@
-const API_URL = 'https://api.vatstack.com/v1/rates';
+const API_URL = 'https://api.vatstack.com/v1/rates?limit=100';
 
 export async function fetchVatRates() {
   const res = await fetch(API_URL, {

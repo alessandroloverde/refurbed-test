@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useMarketStore } from './stores/market.store';
 import { useCartStore } from './stores/cart.store';
 import { PRODUCT_CATALOG } from './domain/products';
-import { calculateGrossPrice } from './utils/price'
+import { calculateGrossPrice, formatPrice } from './utils/price'
 import { fetchExchangeRates } from './services/currency.service';
 
 const market = useMarketStore();
@@ -35,6 +35,11 @@ const stockLabel = (stock) => {
   return 'In stock';
 };
 
+const priceLocale = computed(() =>
+  market.selectedMarket
+    ? `${market.selectedMarket.code.toLowerCase()}-${market.selectedMarket.code}`
+    : 'en'
+);
 
 onMounted(() => {
   market.loadMarketData();
@@ -116,16 +121,16 @@ onMounted(() => {
             <tr v-for="item in cart.items" :key="item.id">
               <td class="p-2">{{ item.name }}</td>
               <td class="p-2">{{ item.quantity }}</td>
-              <td class="p-2">{{ item.netPrice }}</td>
+              <td class="p-2">  
+                {{ (item.netPrice * item.quantity * (1 + market.vatRateForSelectedMarket) * market.exchangeRateForSelectedMarket).toFixed(2) }}
+              </td>
             </tr>
           </tbody>
         </table>
         <hr />
-        <p class="m-2">Net: {{ cart.netTotal }}</p>
-        <p class="m-2">VAT: {{ cart.vatTotal }}</p>
-        <p class="m-2 font-bold">
-          Total: {{ cart.grossTotal }} {{ market.selectedMarket?.currency }}
-        </p>
+        <p class="m-2">Net: {{ formatPrice(priceLocale, cart.netTotal, market.selectedMarket?.currency) }}</p>
+        <p class="m-2">VAT: {{ formatPrice(priceLocale, cart.vatTotal, market.selectedMarket?.currency) }}</p>
+        <p class="m-2 font-bold">Total: {{ formatPrice(priceLocale, cart.grossTotal, market.selectedMarket?.currency) }}</p>
       </div>
     </main>
   </div>
