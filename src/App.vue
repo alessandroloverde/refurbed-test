@@ -142,7 +142,7 @@ onMounted(() => {
             <button
               class="w-full py-2 px-4 bg-[#332e80] hover:bg-[#4540a0] active:bg-[#1e1a5e] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none text-white rounded-lg text-sm font-medium transition-colors"
               :disabled="product.stock <= 0"
-              aria-label="Add {{ product.name }} to cart"
+              :aria-label="`Add ${product.name} to cart`"
               @click="addToCart(product)"
             >
               Add to cart
@@ -169,7 +169,7 @@ onMounted(() => {
           <button
             type="button"
             class="px-3 py-1 text-sm font-medium text-[#332e80] hover:text-[#4540a0] border border-[#332e80] hover:border-[#4540a0] rounded cursor-pointer"
-            aria-label="Remove {{ item.name }} from cart"
+            :aria-label="`Remove ${product.name} from cart`"
             @click="removeFromCart(item)"
           >
             Remove
