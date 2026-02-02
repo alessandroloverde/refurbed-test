@@ -79,6 +79,23 @@ onMounted(() => {
     </header>
     
     <main class="mx-auto w-full max-w-6xl px-4 py-6">
+      <div v-if="market.loading" class="flex items-center justify-center py-16">
+        <div class="text-center text-gray-600">
+          <div class="inline-block w-8 h-8 border-2 border-[#332e80] border-t-transparent rounded-full animate-spin mb-3"></div>
+          <p>Loading market data...</p>
+        </div>
+      </div>
+      <div v-else-if="market.error" class="p-4 mb-4 bg-red-50 border border-red-200 rounded-lg">
+        <p class="text-red-700 mb-3">Failed to load prices.</p>
+        <button
+          type="button"
+          class="px-4 py-2 bg-[#332e80] hover:bg-[#4540a0] text-white text-sm font-medium rounded cursor-pointer"
+          @click="market.loadMarketData()"
+        >
+          Retry
+        </button>
+      </div>
+      <template v-else>
       <div class="grid grid-cols-3 gap-4 p-4 mb-4">
         <div
           class="bg-white rounded-xl p-4 shadow-md flex flex-col"
@@ -160,6 +177,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      </template>
     </main>
   </div>
 </template>
