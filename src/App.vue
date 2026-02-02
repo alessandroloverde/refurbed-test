@@ -7,15 +7,15 @@ import { calculateGrossPrice, formatPrice } from './utils/price'
 import { fetchExchangeRates } from './services/currency.service';
 
 const market = useMarketStore();
-
 const cart = useCartStore();
 const products = ref(PRODUCT_CATALOG.map((p) => ({ ...p })));
-
 
 const addToCart = product => {
   cart.addItem(product)
 };
 
+// ––– ℹ️ Gross price utility ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// Returns the market-adjusted gross price for a product (VAT + currency conversion)
 const grossPrice = product => {
   return calculateGrossPrice(
     product.netPrice,
@@ -25,22 +25,25 @@ const grossPrice = product => {
 };
 
 
-const total = products => {
-  return 0;
-};
-
+// ––– ℹ️ Stock label utility ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// Generates an availability label based on the onStock data
 const stockLabel = (stock) => {
   if (stock <= 0) return 'No stock';
   if (stock <= 2) return `Only ${stock} remaining`;
+
   return 'In stock';
 };
 
+
+// ––– ℹ️ Locale format utility ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// Generates the locale code for price formatting, based on current market
 const priceLocale = computed(() =>
   market.selectedMarket
     ? `${market.selectedMarket.code.toLowerCase()}-${market.selectedMarket.code}`
     : 'en'
 );
 
+// Loads currency and VAT data on load
 onMounted(() => {
   market.loadMarketData();
 });
