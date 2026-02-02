@@ -1,10 +1,9 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useMarketStore } from './stores/market.store';
 import { useCartStore } from './stores/cart.store';
 import { PRODUCT_CATALOG } from './domain/products';
 import { calculateGrossPrice, formatPrice } from './utils/price'
-import { fetchExchangeRates } from './services/currency.service';
 
 const market = useMarketStore();
 const cart = useCartStore();
@@ -46,15 +45,6 @@ const stockLabel = (stock) => {
 
   return 'In stock';
 };
-
-
-// ––– ℹ️ Locale format utility ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// Generates the locale code for price formatting, based on current market
-const priceLocale = computed(() =>
-  market.selectedMarket
-    ? `${market.selectedMarket.code.toLowerCase()}-${market.selectedMarket.code}`
-    : 'en'
-);
 
 
 // ––– ℹ️ Line total helper ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -152,21 +142,21 @@ onMounted(() => {
             Remove
           </button>
           <span class="text-center">{{ item.quantity }}</span>
-          <span class="text-right">{{ formatPrice(priceLocale, lineTotal(item), market.selectedMarket?.currency) }}</span>
+          <span class="text-right">{{ formatPrice(market.selectedMarket?.locale ?? 'en', lineTotal(item), market.selectedMarket?.currency) }}</span>
         </div>
 
         <div class="mt-4 space-y-2 pt-4 border-t border-gray-200">
           <div class="flex justify-between text-sm">
             <span class="text-gray-600">Net price</span>
-            <span>{{ formatPrice(priceLocale, cart.netTotal, market.selectedMarket?.currency) }}</span>
+            <span>{{ formatPrice(market.selectedMarket?.locale ?? 'en', cart.netTotal, market.selectedMarket?.currency) }}</span>
           </div>
           <div class="flex justify-between text-sm">
             <span class="text-gray-600">VAT</span>
-            <span>{{ formatPrice(priceLocale, cart.vatTotal, market.selectedMarket?.currency) }}</span>
+            <span>{{ formatPrice(market.selectedMarket?.locale ?? 'en', cart.vatTotal, market.selectedMarket?.currency) }}</span>
           </div>
           <div class="flex justify-between font-bold pt-2">
             <span>Total price</span>
-            <span>{{ formatPrice(priceLocale, cart.grossTotal, market.selectedMarket?.currency) }}</span>
+            <span>{{ formatPrice(market.selectedMarket?.locale ?? 'en', cart.grossTotal, market.selectedMarket?.currency) }}</span>
           </div>
         </div>
       </div>

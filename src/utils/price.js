@@ -3,5 +3,11 @@ export function calculateGrossPrice(netPriceEur, vatRate, exchangeRate) {
 } 
 
 export function formatPrice(locale, amount, currency = 'EUR') {
-   return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
- }
+  const localeStr = typeof locale === 'string' ? locale : (locale?.value ?? 'en');
+  return new Intl.NumberFormat(localeStr, {
+    style: 'currency',
+    currency: currency || 'EUR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Number(amount));
+}
