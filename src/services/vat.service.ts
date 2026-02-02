@@ -1,3 +1,5 @@
+type VatStackRate = { country_code: string; standard_rate: number };
+
 const API_URL = 'https://api.vatstack.com/v1/rates?limit=100';
 
 export async function fetchVatRates() {
@@ -15,7 +17,7 @@ export async function fetchVatRates() {
   console.log('VAT rates:', json.rates);
 
   return Object.fromEntries(
-    json.rates.map(rate => [
+    (json.rates as VatStackRate[]).map(rate => [
       rate.country_code,
       rate.standard_rate / 100
     ])

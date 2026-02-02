@@ -1,3 +1,5 @@
+type CurrencyEntry = { code: string; value: number };
+
 const API_URL = 'https://api.currencyapi.com/v3/latest';
 
 export async function fetchExchangeRates(base = 'EUR') {
@@ -16,6 +18,6 @@ export async function fetchExchangeRates(base = 'EUR') {
   console.log('Exchange rates:', json.data);
 
   return Object.fromEntries(
-    Object.entries(json.data).map(([code, obj]) => [ code, obj.value ])
+    Object.entries(json.data as Record<string, CurrencyEntry>).map(([code, obj]) => [code, obj.value])
   );
 }
