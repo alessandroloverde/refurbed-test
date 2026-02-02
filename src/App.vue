@@ -41,6 +41,9 @@ const priceLocale = computed(() =>
     : 'en'
 );
 
+const lineTotal = (item) =>
+  (item.netPrice * item.quantity * (1 + market.vatRateForSelectedMarket) * market.exchangeRateForSelectedMarket);
+
 onMounted(() => {
   market.loadMarketData();
 });
@@ -106,31 +109,39 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="p-4 m-4 bg-white shadow-md">
-        <h2 class="text-2xl mb-2">Cart</h2>
-        <hr />
-        <table class="table-fixed">
-          <thead>
-            <tr>
-              <th class="w-1/2 text-left p-2">Product</th>
-              <th class="w-1/4 p-2">Quantity</th>
-              <th class="w-1/4 text-right p-2">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in cart.items" :key="item.id">
-              <td class="p-2">{{ item.name }}</td>
-              <td class="p-2">{{ item.quantity }}</td>
-              <td class="p-2">  
-                {{ (item.netPrice * item.quantity * (1 + market.vatRateForSelectedMarket) * market.exchangeRateForSelectedMarket).toFixed(2) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <hr />
-        <p class="m-2">Net: {{ formatPrice(priceLocale, cart.netTotal, market.selectedMarket?.currency) }}</p>
-        <p class="m-2">VAT: {{ formatPrice(priceLocale, cart.vatTotal, market.selectedMarket?.currency) }}</p>
-        <p class="m-2 font-bold">Total: {{ formatPrice(priceLocale, cart.grossTotal, market.selectedMarket?.currency) }}</p>
+      <div class="p-4 m-4 bg-white shadow-md rounded-lg">
+        <h2 class="text-2xl mb-4">🛒 Your Cart</h2>
+
+        <div class="grid grid-cols-[1fr_6rem_8rem] gap-3 py-2 border-b border-gray-200 text-sm font-medium text-gray-500">
+          <span>Product</span>
+          <span class="text-center">Quantity</span>
+          <span class="text-right">Price</span>
+        </div>
+
+        <div
+          v-for="item in cart.items"
+          :key="item.id"
+          class="grid grid-cols-[1fr_6rem_8rem] gap-3 py-3 border-b border-gray-100 text-sm"
+        >
+          <span class="font-medium">{{ item.name }}</span>
+          <span class="text-center">{{ item.quantity }}</span>
+          <span class="text-right">{{ formatPrice(priceLocale, lineTotal(item), market.selectedMarket?.currency) }}</span>
+        </div>
+
+        <div class="mt-4 space-y-2 pt-4 border-t border-gray-200">
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Net price</span>
+            <span>{{ formatPrice(priceLocale, cart.netTotal, market.selectedMarket?.currency) }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">VAT</span>
+            <span>{{ formatPrice(priceLocale, cart.vatTotal, market.selectedMarket?.currency) }}</span>
+          </div>
+          <div class="flex justify-between font-bold pt-2">
+            <span>Total price</span>
+            <span>{{ formatPrice(priceLocale, cart.grossTotal, market.selectedMarket?.currency) }}</span>
+          </div>
+        </div>
       </div>
     </main>
   </div>
