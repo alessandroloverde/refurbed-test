@@ -33,6 +33,9 @@ export const useMarketStore = defineStore('market', {
 
    actions: {
       async loadMarketData() {
+         if (Object.keys(this.exchangeRates).length > 0) return;
+         if (Object.keys(this.vatRates).length > 0) return;
+
          try {
             this.loading = true;
             this.error = null;
