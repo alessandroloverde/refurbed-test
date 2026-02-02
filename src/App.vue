@@ -169,7 +169,7 @@ onMounted(() => {
           <button
             type="button"
             class="px-3 py-1 text-sm font-medium text-[#332e80] hover:text-[#4540a0] border border-[#332e80] hover:border-[#4540a0] rounded cursor-pointer"
-            :aria-label="`Remove ${product.name} from cart`"
+            :aria-label="`Remove ${item.name} from cart`"
             @click="removeFromCart(item)"
           >
             Remove
