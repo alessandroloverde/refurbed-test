@@ -12,7 +12,8 @@ const products = ref(PRODUCT_CATALOG.map((p) => ({ ...p })));
 
 // ––– ℹ️ Add to cart function ––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 const addToCart = product => {
-  cart.addItem(product)
+  cart.addItem(product);
+  if (product.stock > 0) product.stock -= 1;
 };
 
 

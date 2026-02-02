@@ -71,8 +71,6 @@ export const useCartStore = defineStore('cart', {
                quantity: 1,
             });
          }
-
-         product.stock -= 1;
       },
       removeItem(productId: number) {
          const index = this.items.findIndex(item => item.id === productId);
