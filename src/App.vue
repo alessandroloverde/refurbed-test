@@ -110,7 +110,7 @@ onMounted(() => {
       </div>
       <template v-else>
         <h1 class="text-2xl font-bold mb-4 px-4">Mobile Phones</h1>
-        <div class="grid grid-cols-3 gap-4 p-4 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mb-4">
           <div
             class="bg-white rounded-xl p-4 shadow-md flex flex-col"
             v-for="(product) in products"
