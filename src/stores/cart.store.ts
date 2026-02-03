@@ -22,33 +22,30 @@ export const useCartStore = defineStore('cart', {
    }),
 
    getters: {
-      netTotal(state) {
-         const market = useMarketStore();
-         const netEur = state.items.reduce(
+      // Base calculation: net total in EUR (before exchange rate conversion)
+      netTotalEur(state): number {
+         return state.items.reduce(
            (sum, item) => sum + item.netPrice * item.quantity,
            0
          );
-
-         return netEur * (market.exchangeRateForSelectedMarket ?? 1);
       },
-      vatTotal(state) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      netTotal(_state): number {
          const market = useMarketStore();
-         const net = state.items.reduce(
-            (sum, item) => sum + item.netPrice * item.quantity,
-            0
-         );
-         const vatAmount = net * (market.vatRateForSelectedMarket ?? 0);
+         return this.netTotalEur * (market.exchangeRateForSelectedMarket ?? 1);
+      },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      vatTotal(_state): number {
+         const market = useMarketStore();
+         const vatAmount = this.netTotalEur * (market.vatRateForSelectedMarket ?? 0);
          const exchangeRate = market.exchangeRateForSelectedMarket ?? 1;
          
          return vatAmount * exchangeRate; 
       },
-      grossTotal(state) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      grossTotal(_state): number {
          const market = useMarketStore();
-         const net = state.items.reduce(
-            (sum, item) => sum + item.netPrice * item.quantity,
-            0
-         );
-         const grossEur = net * (1 + (market.vatRateForSelectedMarket ?? 0));
+         const grossEur = this.netTotalEur * (1 + (market.vatRateForSelectedMarket ?? 0));
          const exchangeRate = market.exchangeRateForSelectedMarket ?? 1;
 
          return grossEur * exchangeRate;
