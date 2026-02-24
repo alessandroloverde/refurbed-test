@@ -46,16 +46,16 @@ refurbed frontend apps team
 
 # Project overview
 
-Vue 3 + Vite shopping cart with multi-market support. Prices are net in EUR; the app fetches VAT rates (VatStack) and exchange rates (CurrencyAPI), computes gross prices per market, and displays them in the selected currency with locale-aware formatting (Intl).
+Vue 3 + Vite shopping cart with multi-market support. Prices are net in EUR; the app fetches VAT rates (VatStack) and exchange rates (Frankfurter), computes gross prices per market, and displays them in the selected currency with locale-aware formatting (Intl).
 
 **How I built it.** I started with a minimal setup: a test API fetch (VAT connection), a simple responsive layout container (Tailwind), and a basic Pinia store for exchange rates, VAT and selected market. I then expanded step by step: moved VAT and Currency API calls into dedicated services and env-based API keys; refactored the market dropdown so it’s driven by dynamic data (markets in a separate file), added flags and layout tweaks for the dropdown. Cart logic, price calculation and Intl formatting were moved into the store and a price helper; product data was moved to the domain layer; tables were replaced with a grid; remove-from-cart and loading/error states were added.
 
-**What’s inside:** `src/stores/` — Pinia (market, cart); `src/services/` — VatStack & CurrencyAPI clients; `src/domain/` — products and market config (locale per market); `src/utils/price.ts` — `Intl.NumberFormat` for currency.
+**What’s inside:** `src/stores/` — Pinia (market, cart); `src/services/` — VatStack & Frankfurter (exchange rates) clients; `src/domain/` — products and market config (locale per market); `src/utils/price.ts` — `Intl.NumberFormat` for currency.
 
 **Features:** Market switch (dropdown with flags) in the header; product grid with gross price and stock; add/remove cart; cart total in selected currency; loading spinner and API error box; basic accessibility. Responsive layout with Tailwind.
 
-**Tech stack:** Vue 3, Vite, Pinia, TypeScript, Tailwind CSS. APIs: VatStack and CurrencyAPI. 
-Env: set `VITE_VATSTACK_API_KEY` and `VITE_CURRENCY_API_KEY` for live data.
+**Tech stack:** Vue 3, Vite, Pinia, TypeScript, Tailwind CSS. APIs: VatStack (VAT rates), [Frankfurter](https://www.frankfurter.app/) (exchange rates, free, no API key). 
+Env: set `VITE_VATSTACK_API_KEY` for VAT data; exchange rates use Frankfurter and require no key.
 
 
 ⚠️ TS can't be fully implemented in App.vue due to an incorret esLint setting.
