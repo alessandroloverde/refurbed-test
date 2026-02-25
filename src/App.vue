@@ -3,7 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useMarketStore } from './stores/market.store';
 import { useCartStore } from './stores/cart.store';
 import { PRODUCT_CATALOG } from './domain/products';
-import { calculateGrossPrice, formatPrice } from './utils/price'
+import { calculateGrossPrice, formatPrice } from './utils/price';
+import ProductCard from './components/ProductCard.vue';
 
 const market = useMarketStore();
 const cart = useCartStore();
@@ -112,44 +113,16 @@ onMounted(() => {
       <template v-else>
         <h1 class="text-2xl font-bold mb-4 px-4">Mobile Phones</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mb-4">
-          <div
-            class="bg-white rounded-xl p-4 shadow-md flex flex-col"
+          <ProductCard
             v-for="(product) in products"
             :key="product.id"
-          >
-            <h3 class="text-lg font-semibold mb-3">{{ product.name }}</h3>
-
-            <div class="grid grid-cols-[3fr_2fr] gap-3 mb-4">
-              <img
-                class="w-full aspect-square object-contain rounded-lg"
-                :src="product.picture"
-                :alt="product.name"
-              />
-              <div class="flex flex-col justify-center">
-                <p class="text-xl font-bold mb-1">{{grossPrice(product) }} {{ market.selectedMarket?.currency }} </p>
-                <p
-                  class="text-sm"
-                  :class="{
-                    'text-green-600': product.stock > 2,
-                    'text-amber-600': product.stock > 0 && product.stock <= 2,
-                    'text-red-600': product.stock <= 0
-                  }"
-                >
-                  {{ stockLabel(product.stock) }}
-                </p>
-              </div>
-            </div>
-
-            <button
-              class="w-full py-2 px-4 bg-[#332e80] hover:bg-[#4540a0] active:bg-[#1e1a5e] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none text-white rounded-lg text-sm font-medium transition-colors"
-              :disabled="product.stock <= 0"
-              :aria-label="`Add ${product.name} to cart`"
-              @click="addToCart(product)"
-            >
-              Add to cart
-            </button>
-          </div>
-      </div>
+            :product="product"
+            :gross-price-formatted="grossPrice(product)"
+            :stock-label-text="stockLabel(product.stock)"
+            :currency="market.selectedMarket?.currency"
+            @add-to-cart="addToCart"
+          />
+        </div>
 
       <div class="p-4 m-4 bg-white shadow-md rounded-lg">
         <h2 class="text-2xl mb-4">🛒 Your Cart</h2>
