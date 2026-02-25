@@ -35,10 +35,7 @@ git commit -m 'Short summary' -m 'Detailed explanation...'
 
 - Once your solution is **production-ready**, run `npm run clean`, zip the entire `homework-vue` folder, and send it to us.
 
----
 
-Happy Coding,  
-refurbed frontend apps team
 
 
 ================================================================================================

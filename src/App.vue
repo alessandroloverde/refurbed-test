@@ -3,7 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useMarketStore } from './stores/market.store';
 import { useCartStore } from './stores/cart.store';
 import { PRODUCT_CATALOG } from './domain/products';
-import { calculateGrossPrice, formatPrice } from './utils/price'
+import { calculateGrossPrice, formatPrice } from './utils/price';
+import AddToCartButton from './components/AddToCartButton.vue';
 
 const market = useMarketStore();
 const cart = useCartStore();
@@ -66,9 +67,9 @@ onMounted(() => {
 
 <template>
   <div class="min-h-screen mainBkg">
-    <header class="bg-[#332e80] p-4 w-full">
+    <header class="bg-[#143354] p-4 w-full">
       <div class="mx-auto w-full max-w-6xl px-4 py-4 flex justify-between items-center">
-        <img class="w-32" src="./assets/logo.svg" alt="Refurbed Logo" />
+        <img class="w-64" src="./assets/logo.svg" alt="Logo" />
         <div class="flex items-center gap-2">
           <label for="market-select" class="text-[#f3ffef] text-sm">Market selected:</label>
           <select
@@ -140,14 +141,11 @@ onMounted(() => {
               </div>
             </div>
 
-            <button
-              class="w-full py-2 px-4 bg-[#332e80] hover:bg-[#4540a0] active:bg-[#1e1a5e] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none text-white rounded-lg text-sm font-medium transition-colors"
+            <AddToCartButton
               :disabled="product.stock <= 0"
               :aria-label="`Add ${product.name} to cart`"
               @click="addToCart(product)"
-            >
-              Add to cart
-            </button>
+            />
           </div>
       </div>
 
